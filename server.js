@@ -79,6 +79,36 @@ const deleteEmployee = async (_root, { id }) => {
   return result.deletedCount;
 };
 
+const updateEmployee = async (_root, { id, input }) => {
+  const updatedFields = {};
+  
+  if (input.Title !== undefined) {
+    updatedFields.Title = input.Title;
+  }
+  if (input.Department !== undefined) {
+    updatedFields.Department = input.Department;
+  }
+  console.log('server -- '+ id)
+  console.log('server -- '+ input.CurrentStatus)
+  console.log('server -- '+ updatedFields.CurrentStatus)
+  if (input.CurrentStatus !== undefined) {
+   
+    updatedFields.CurrentStatus = input.CurrentStatus;
+  }
+  const result = await db
+    .collection("employees")
+    .updateOne({ id: parseInt(id) }, { $set: updatedFields });
+
+  if (result.modifiedCount === 1) {
+    const updatedEmployee = await db
+      .collection("employees")
+      .findOne({ id: parseInt(id) });
+    return updatedEmployee;
+  } else {
+    throw new Error("Failed to update employee.");
+  }
+};
+
 const resolvers = {
   Query: {
     employees: employeeList,
@@ -87,6 +117,7 @@ const resolvers = {
   Mutation: {
     addEmployee: addEmployee,
     deleteEmployee: deleteEmployee,
+    updateEmployee: updateEmployee,
   },
   GraphQlDate: GraphQlDateResolver,
 };
