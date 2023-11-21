@@ -88,9 +88,6 @@ const updateEmployee = async (_root, { id, input }) => {
   if (input.Department !== undefined) {
     updatedFields.Department = input.Department;
   }
-  console.log('server -- '+ id)
-  console.log('server -- '+ input.CurrentStatus)
-  console.log('server -- '+ updatedFields.CurrentStatus)
   if (input.CurrentStatus !== undefined) {
    
     updatedFields.CurrentStatus = input.CurrentStatus;
